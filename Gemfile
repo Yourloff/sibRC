@@ -16,6 +16,7 @@ group :development, :test do
   gem 'brakeman', require: false
   gem 'rubocop-rails-omakase', require: false
   gem 'sqlite3', '>= 1.4'
+  gem 'rspec-rails', '~> 7.1'
 end
 
 group :development do

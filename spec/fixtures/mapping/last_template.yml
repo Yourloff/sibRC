@@ -1,4 +1,4 @@
-path: "last_template.docx"
+path: "app/templates/last_template.docx"
 placeholders:
   num_act: "{num_act}" # Номер акта
   date_compilation: "{date_compilation}" # Дата составления
