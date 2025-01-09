@@ -1,0 +1,20 @@
+path: "app/templates/last_template.docx"
+placeholders:
+  num_act: "{num_act}" # Номер акта
+  date_compilation: "{date_compilation}" # Дата составления
+  basis_tech_examination: "{basis_tech_examination}" # Основание для проведения технической экспертизы
+  inn: "{inn}" # ИНН
+  kpp: "{kpp}" # КПП
+  customer: "{customer}" # Заказчик
+  control_address: "{control_address}" # Адрес проведения контроля
+  product: "{product}" # Изделие
+  inventory_number: "{iInventory_number}" # Инвентарный номер
+  date_manufacture: "{date_manufacture}" # Дата изготовления
+  balance_cost: "{balance_cost}" # Балансовая стоимость
+  diagnostic: "{diagnostic}" # Диагностика
+  summary: "{summary}" # Вывод
+  business_case: "{business_case}" # Экономическое обоснование
+  conclusion: "{conclusion}" # Заключение
+  note: "{note}" # Примечание
+  director: "{director}" # Директор
+  expert: "{expert}" # Эксперт
