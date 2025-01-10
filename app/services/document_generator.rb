@@ -11,46 +11,40 @@ class DocumentGenerator
   def generate
     raise "Шаблон не найден по пути: #{@template_path}" unless File.exist?(@template_path)
 
-    begin
-      doc = Docx::Document.open(@template_path)
-    rescue => e
-      raise "Ошибка при открытии документа: #{e.message}"
+    @replacements.count.times do |i|
+      begin
+        doc = Docx::Document.open(@template_path)
+      rescue => e
+        raise "Ошибка при открытии документа: #{e.message}"
+      end
+
+      replace_text_in_paragraphs(doc, @replacements[i])
+
+      replace_text_in_tables(doc, @replacements[i])
+
+      file_name = Time.now.strftime("%Y-%m-%d_%H-%M-%S") + "_#{Time.now.usec / 1000}"
+      output_path = Rails.root.join('tmp', "#{file_name}.docx")
+      doc.save(output_path)
     end
-
-    replace_text_in_paragraphs(doc)
-
-    replace_text_in_tables(doc)
-
-    file_name = Time.now.strftime("%Y-%m-%d_%H-%M-%S") + "_#{Time.now.usec / 1000}"
-    output_path = Rails.root.join('tmp', "#{file_name}.docx")
-    doc.save(output_path)
-    output_path
   end
 
   private
 
-  def replace_text_in_paragraphs(doc)
-    @replacements.each do |replacement|
-      replacement.each do |key, value|
-        doc.paragraphs.each do |p|
-          p.text = p.text.gsub(placeholders[key], value)
-        end
+  def replace_text_in_paragraphs(doc, replacement)
+    replacement.each do |key, value|
+      doc.paragraphs.each do |p|
+        p.text = p.text.gsub(placeholders[key], value)
       end
     end
   end
 
-  def replace_text_in_tables(doc)
+  def replace_text_in_tables(doc, replacement)
     doc.tables.each do |table|
       table.rows.each do |row|
         row.cells.each do |cell|
-          # Перебираем каждый хэш замен
-          @replacements.each do |replacement|
-            # Перебираем все плейсхолдеры и их значения
-            replacement.each do |key, value|
-              # Для каждой ячейки, перебираем ее параграфы и заменяем текст в них
-              cell.paragraphs.each do |p|
-                p.text = p.text.gsub("{#{key}}", value)
-              end
+          replacement.each do |key, value|
+            cell.paragraphs.each do |p|
+              p.text = p.text.gsub("{#{key}}", value)
             end
           end
         end

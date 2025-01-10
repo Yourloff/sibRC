@@ -22,6 +22,26 @@ RSpec.describe DocumentGenerator, type: :service do
         'note' => 'Примечание',
         'director' => 'Иванов И.И.',
         'expert' => 'Сидоров С.С.'
+      },
+      {
+        'num_act' => '6789',
+        'date_compilation' => '11.01.2025',
+        'basis_tech_examination' => 'Основание для экспертизы1',
+        'inn' => '3457897654',
+        'kpp' => '157654987',
+        'customer' => 'ООО Пример',
+        'control_address' => 'г. Красноярск, ул. Примерная, д. 20',
+        'product' => 'Продукт',
+        'inventory_number' => '643-634-234',
+        'date_manufacture' => '2024-12-01',
+        'balance_cost' => '6543',
+        'diagnostic' => 'Диагностика проведена успешно',
+        'summary' => 'Вывод по акту',
+        'business_case' => 'Экономическое обоснование',
+        'conclusion' => 'Заключение',
+        'note' => 'Примечание',
+        'director' => 'Иванов И.И.',
+        'expert' => 'Сидоров С.С.'
       }
     ]
   end
