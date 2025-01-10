@@ -1,6 +1,6 @@
 class DocumentGenerator
-
   attr_reader :template_path, :placeholders, :replacements
+
   def initialize(document_name, replacements)
     template_config = load_template_config(document_name)
     @template_path = template_config[:path]
@@ -21,7 +21,8 @@ class DocumentGenerator
 
     replace_text_in_tables(doc)
 
-    output_path = Rails.root.join('tmp', 'generated_document.docx')
+    file_name = Time.now.strftime("%Y-%m-%d_%H-%M-%S") + "_#{Time.now.usec / 1000}"
+    output_path = Rails.root.join('tmp', "#{file_name}.docx")
     doc.save(output_path)
     output_path
   end
