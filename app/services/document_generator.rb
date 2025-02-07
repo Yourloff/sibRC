@@ -1,25 +1,27 @@
 class DocumentGenerator
-  attr_reader :template_path, :placeholders, :replacements
+  attr_reader :template, :placeholders, :replacements
 
   def initialize(document_name, replacements)
-    template_config = load_template_config(document_name)
-    @template_path = template_config[:path]
+    @template = Template.find_by(title: document_name)
+
+    raise "Шаблон с названием #{document_name} не найден" unless @template
+    template_config = load_template_config(@template)
+
     @placeholders = template_config[:placeholders]
     @replacements = replacements
   end
 
   def generate
-    raise "Шаблон не найден по пути: #{@template_path}" unless File.exist?(@template_path)
+    raise "Шаблон не найден" unless @template.file.attached?
 
     @replacements.count.times do |i|
       begin
-        doc = Docx::Document.open(@template_path)
+        doc = Docx::Document.open(download_template_file)
       rescue => e
         raise "Ошибка при открытии документа: #{e.message}"
       end
 
       replace_text_in_paragraphs(doc, @replacements[i])
-
       replace_text_in_tables(doc, @replacements[i])
 
       file_name = Time.now.strftime("%Y-%m-%d_%H-%M-%S") + "_#{Time.now.usec / 1000}"
@@ -29,6 +31,10 @@ class DocumentGenerator
   end
 
   private
+
+  def download_template_file
+    @template.file.download
+  end
 
   def replace_text_in_paragraphs(doc, replacement)
     replacement.each do |key, value|
@@ -52,9 +58,12 @@ class DocumentGenerator
     end
   end
 
-  def load_template_config(document_name)
-    base_name = File.basename(document_name, File.extname(document_name))
+  def load_template_config(template)
+    base_name = template.title.gsub(' ', '_').downcase
     yaml_path = Rails.root.join('app', 'mapping', "#{base_name}.yml")
+
+    # Добавим вывод для проверки пути
+    puts "Загружаем файл маппинга: #{yaml_path}"
 
     unless File.exist?(yaml_path)
       raise "Маппинг #{base_name}.yml не найден по пути #{yaml_path}"
@@ -66,7 +75,7 @@ class DocumentGenerator
       raise "Ошибка при загрузке YAML файла: #{e.message}"
     end
 
-    raise "Маппинг #{base_name} не найден в файле #{yaml_path}" unless config
+    raise "Маппинг для шаблона #{template.title} не найден в файле #{yaml_path}" unless config
 
     {
       path: Rails.root.join('app', 'templates', config['path']).to_s,

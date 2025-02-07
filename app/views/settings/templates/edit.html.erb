@@ -1,0 +1,19 @@
+<h1>Редактировать шаблон</h1>
+
+<div class="form-container">
+  <%= form_with(model: @template, url: settings_template_path(@template), method: :patch, local: true) do |form| %>
+    <div>
+      <%= form.label :file, "Выберите новый файл (если нужно)" %>
+      <%= form.file_field :file %>
+    </div>
+
+    <div>
+      <%= form.label :title, "Название шаблона" %>
+      <%= form.text_field :title %>
+    </div>
+
+    <div>
+      <%= form.submit "Обновить" %>
+    </div>
+  <% end %>
+</div>
