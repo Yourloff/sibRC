@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= content_for(:title) || "Sibrc" %></title>
+    <title><%= content_for(:title) || 'СибУЦ' %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <%= csrf_meta_tags %>
@@ -20,6 +20,10 @@
   </head>
 
   <body>
-    <%= yield %>
+    <%= render partial: 'shared/header' %>
+
+    <div class="container">
+      <%= yield %>
+    </div>
   </body>
 </html>
