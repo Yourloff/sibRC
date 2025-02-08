@@ -2,8 +2,18 @@
 
 <%= form_with(model: @client, local: true) do |f| %>
   <p>
-    <%= f.label :full_name, "ФИО" %>
-    <%= f.text_field :full_name %>
+    <%= f.label :first_name, "Имя" %>
+    <%= f.text_field :first_name %>
+  </p>
+
+  <p>
+    <%= f.label :middle_name, "Фамилия" %>
+    <%= f.text_field :middle_name %>
+  </p>
+
+  <p>
+    <%= f.label :last_name, "Отчество" %>
+    <%= f.text_field :last_name %>
   </p>
 
   <p>
@@ -30,6 +40,13 @@
     <%= f.label :phone, "Телефон" %>
     <%= f.text_field :phone %>
   </p>
+
+  <p>
+    <%= f.label :email, "Почта" %>
+    <%= f.text_field :email %>
+  </p>
+
+  <%= f.hidden_field :type, value: "Client" %>
 
   <p>
     <%= f.submit "Добавить клиента" %>
