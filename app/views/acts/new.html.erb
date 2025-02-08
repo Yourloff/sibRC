@@ -1,0 +1,17 @@
+<h2>Создание акта для клиента <%= @client.fio %></h2>
+
+<%= form_with(model: @act, url: client_acts_path(@client), local: true) do |f| %>
+  <p>
+    <%= f.label :template_id, "Шаблон" %>
+    <%= f.collection_select :template_id, @templates, :id, :title, prompt: "Выберите шаблон" %>
+  </p>
+
+  <p>
+    <%= f.label :file, "Документ" %>
+    <%= f.file_field :file %>
+  </p>
+
+  <%= f.submit "Создать акт" %>
+<% end %>
+
+<%= link_to 'Назад', client_path(@client) %>
