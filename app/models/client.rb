@@ -6,4 +6,8 @@ class Client < User
   def password_required?
     false
   end
+
+  def fio
+    last_name + ' ' + first_name + ' ' + middle_name + ' / ' + customer
+  end
 end

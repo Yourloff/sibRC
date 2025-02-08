@@ -1,0 +1,61 @@
+<h1>Редактировать профиль</h1>
+
+<%= form_with(model: @worker, local: true) do |f| %>
+  <% if @worker.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@worker.errors.count, "error") %> prohibited this worker from being saved:</h2>
+      <ul>
+        <% @worker.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <p>
+    <%= f.label :first_name, "Имя" %>
+    <%= f.text_field :first_name %>
+  </p>
+
+  <p>
+    <%= f.label :middle_name, "Отчество" %>
+    <%= f.text_field :middle_name %>
+  </p>
+
+  <p>
+    <%= f.label :last_name, "Фамилия" %>
+    <%= f.text_field :last_name %>
+  </p>
+
+  <p>
+    <%= f.label :phone, "Телефон" %>
+    <%= f.text_field :phone %>
+  </p>
+
+  <p>
+    <%= f.label :birth_date, "Дата рождения" %>
+    <%= f.date_field :birth_date %>
+  </p>
+
+  <p>
+    <%= f.label :email, "Email" %>
+    <%= f.email_field :email %>
+  </p>
+
+  <p>
+    <%= f.label :gender, "Пол" %>
+    <%= f.select :gender, options_for_select(["Мужской", "Женский"], @worker.gender) %>
+  </p>
+
+  <p>
+    <%= f.label :position, "Должность" %>
+    <%= f.text_field :position %>
+  </p>
+
+  <p>
+    <%= f.submit "Обновить профиль" %>
+  </p>
+
+<% end %>
+
+<%= link_to "Назад", worker_path(@worker) %>

@@ -1,3 +1,8 @@
 <h1>Сибирский утилизационный центр</h1>
 
+<h2>Список клиентов</h2>
+<% @clients.each do |client| %>
+  <p><%= link_to client.fio, client %></p>
+<% end %>
+
 <%= link_to 'Добавить клиента', new_client_path %>

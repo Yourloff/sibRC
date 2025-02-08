@@ -1,4 +1,4 @@
-<h2>Профиль сотрудника</h2>
+<h1>Профиль сотрудника</h1>
 
 <p><strong>ФИО:</strong> <%= @worker.first_name.to_s + " " + @worker.middle_name.to_s + " " + @worker.last_name.to_s %></p>
 <p><strong>Телефон:</strong> <%= @worker.phone %></p>
@@ -8,4 +8,5 @@
 <p><strong>Должность:</strong> <%= @worker.position %></p>
 
 <%= link_to "Назад", root_path %> |
+<%= link_to "Редактировать профиль", edit_worker_path %> |
 <%= link_to "Выход", destroy_user_session_path, method: :delete, data: { confirm: "Вы уверены, что хотите выйти?" } %>

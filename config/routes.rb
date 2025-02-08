@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   devise_for :users, controllers: { registrations: "users/registrations" }
 
   authenticate :user, ->(u) { u.is_a?(Worker) } do
-    resources :workers, only: %i[show]
+    resources :workers, only: [:show, :edit, :update]
     resources :settings, only: %i[index]
 
     namespace :settings do
