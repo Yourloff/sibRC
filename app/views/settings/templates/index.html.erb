@@ -18,7 +18,8 @@
         <p><%= template.title %></p>
 
         <div class="buttons-container">
-          <%= link_to 'Скачать', rails_blob_path(template.file, disposition: "attachment"), class: "download-link" %>
+          <%= link_to 'Скачать docx', rails_blob_path(template.file, disposition: "attachment"), class: "download-link" %>
+          <%= link_to 'Скачать yml', rails_blob_path(template.metadata, disposition: "attachment"), class: "download-link" %>
           <%= link_to 'Редактировать', edit_settings_template_path(template), class: "edit-link" %>
           <%= link_to 'Удалить', settings_template_path(template), method: :delete, data: { confirm: 'Вы уверены?' }, class: "delete-link" %>
         </div>

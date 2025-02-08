@@ -34,6 +34,6 @@ class Settings::TemplatesController < ApplicationController
   private
 
   def template_params
-    params.require(:template).permit(:file, :title)
+    params.require(:template).permit(:file, :metadata, :title)
   end
 end

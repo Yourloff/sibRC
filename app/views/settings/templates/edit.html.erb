@@ -7,6 +7,11 @@
       <%= form.file_field :file %>
     </div>
 
+    <p>
+      <%= form.label :metadata, "YAML-файл" %>
+      <%= form.file_field :metadata %>
+    </p>
+
     <div>
       <%= form.label :title, "Название шаблона" %>
       <%= form.text_field :title %>

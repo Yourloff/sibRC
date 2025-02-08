@@ -44,7 +44,7 @@
 
   <p>
     <%= f.label :gender, "Пол" %>
-    <%= f.select :gender, options_for_select(["Мужской", "Женский"], @worker.gender) %>
+    <%= f.select :gender, options_for_select(%w[Мужской Женский], @worker.gender) %>
   </p>
 
   <p>
