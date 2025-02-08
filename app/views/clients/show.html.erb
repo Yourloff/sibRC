@@ -1,3 +1,5 @@
 <h1>Просмотр клиента</h1>
 
 <p><%= @client.fio %></p>
+
+<%= link_to 'Формирование актов', new_client_act_path(@client) %>
