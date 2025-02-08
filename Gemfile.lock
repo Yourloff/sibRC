@@ -117,6 +117,10 @@ GEM
     docx (0.8.0)
       nokogiri (~> 1.13, >= 1.13.0)
       rubyzip (~> 2.0)
+    dotenv (3.1.7)
+    dotenv-rails (3.1.7)
+      dotenv (= 3.1.7)
+      railties (>= 6.1)
     drb (2.2.1)
     erubi (1.13.1)
     foreman (0.88.1)
@@ -322,6 +326,7 @@ DEPENDENCIES
   debug
   devise
   docx (~> 0.8.0)
+  dotenv-rails
   foreman
   jbuilder
   jsbundling-rails
