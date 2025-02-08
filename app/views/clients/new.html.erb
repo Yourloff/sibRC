@@ -1,0 +1,37 @@
+<h2>Добавить клиента</h2>
+
+<%= form_with(model: @client, local: true) do |f| %>
+  <p>
+    <%= f.label :full_name, "ФИО" %>
+    <%= f.text_field :full_name %>
+  </p>
+
+  <p>
+    <%= f.label :inn, "ИНН" %>
+    <%= f.text_field :inn %>
+  </p>
+
+  <p>
+    <%= f.label :kpp, "КПП" %>
+    <%= f.text_field :kpp %>
+  </p>
+
+  <p>
+    <%= f.label :customer, "Заказчик" %>
+    <%= f.text_field :customer %>
+  </p>
+
+  <p>
+    <%= f.label :address, "Адрес" %>
+    <%= f.text_field :address %>
+  </p>
+
+  <p>
+    <%= f.label :phone, "Телефон" %>
+    <%= f.text_field :phone %>
+  </p>
+
+  <p>
+    <%= f.submit "Добавить клиента" %>
+  </p>
+<% end %>

@@ -1,5 +1,13 @@
 <div class="header">
   <div class="container">
     <%= link_to 'СибУЦ', root_path, class: 'logo' %>
+
+    <% if user_signed_in? && current_user.is_a?(Worker) %>
+      <%= link_to "Мой профиль", worker_path(current_user) %>
+    <% end %>
+
+    <% if user_signed_in? %>
+      <%= link_to "Выход", destroy_user_session_path, method: :delete, data: { turbo_method: "delete", confirm: "Вы уверены, что хотите выйти?" } %>
+    <% end %>
   </div>
 </div>
