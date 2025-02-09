@@ -4,6 +4,7 @@ class Client < User
   validates :password, absence: true
 
   has_many :acts
+  has_many_attached :acceptance_files, service: :minio_acceptance_files
 
   def password_required?
     false

@@ -1,5 +1,6 @@
 class ClientsController < ApplicationController
   before_action :authenticate_worker!
+  before_action :set_client
 
   def index
     @clients = Client.all
@@ -19,11 +20,9 @@ class ClientsController < ApplicationController
   end
 
   def show
-    @client = Client.find(params[:id])
   end
 
   def edit
-    @client = Client.find(params[:id])
   end
 
   def update
@@ -41,7 +40,42 @@ class ClientsController < ApplicationController
     redirect_to clients_path, notice: "Клиент удален"
   end
 
+  # Загрузка файлов
+  def upload_acceptance_files
+    files = params[:client][:acceptance_files]
+
+    files.each do |file|
+      next if file.blank?
+      @client.acceptance_files.attach(io: file.tempfile, filename: file.original_filename, content_type: file.content_type)
+    end
+
+    redirect_to @client
+  end
+
+  def delete_acceptance_file
+    blob = ActiveStorage::Blob.find_signed(params[:file_id])
+
+    if blob
+      attachment = @client.acceptance_files.find_by(blob_id: blob.id)
+      attachment&.purge
+      blob.purge
+
+      flash[:notice] = 'Файл удален'
+    else
+      flash[:alert] = 'Файл не найден'
+    end
+
+    respond_to do |format|
+      format.turbo_stream { render turbo_stream: turbo_stream.remove("file_#{params[:file_id]}") }
+      format.html { redirect_to @client }
+    end
+  end
+
   private
+
+  def set_client
+    @client = Client.find(params[:id] || params[:client_id])
+  end
 
   def authenticate_worker!
     redirect_to root_path, alert: "Нет доступа!" unless current_user.is_a?(Worker)

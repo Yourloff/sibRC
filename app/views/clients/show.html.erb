@@ -2,4 +2,19 @@
 
 <p><%= @client.fio %></p>
 
+<h2>Загрузить файлы</h2>
+
+<%= form_with(model: @client, url: upload_acceptance_files_client_path(@client), method: :post, local: false, html: { multipart: true }) do |form| %>
+  <%= form.file_field :acceptance_files, multiple: true %>
+  <%= form.submit "Загрузить файлы" %>
+<% end %>
+
+<h2>Загруженные файлы</h2>
+
+<ul id="acceptance-files-list">
+  <% @client.acceptance_files.each do |file| %>
+    <%= render partial: "clients/acceptance_file", locals: { acceptance_file: file } %>
+  <% end %>
+</ul>
+
 <%= link_to 'Формирование актов', new_client_act_path(@client) %>

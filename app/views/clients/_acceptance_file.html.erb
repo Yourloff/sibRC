@@ -1,0 +1,4 @@
+<li id="file_<%= acceptance_file.signed_id %>">
+  <%= link_to acceptance_file.filename.to_s, url_for(acceptance_file) %>
+  <%= link_to "Удалить", client_delete_acceptance_file_path(@client, file_id: acceptance_file.signed_id), data: { turbo_method: :delete, turbo_confirm: "Удалить файл?" } %>
+</li>

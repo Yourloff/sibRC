@@ -1,0 +1,7 @@
+<turbo-stream action="append" target="acceptance-files-list">
+  <% @client.acceptance_files.each do |file| %>
+    <%= turbo_stream.replace "file_#{file.signed_id}" do %>
+      <%= render partial: "clients/acceptance_file", locals: { acceptance_file: file } %>
+    <% end %>
+  <% end %>
+</turbo-stream>

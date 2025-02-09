@@ -11,7 +11,7 @@ gem 'tzinfo-data', platforms: %i[ windows jruby ]
 gem 'bootsnap', require: false
 gem 'docx', '~> 0.8.0'
 gem 'devise'
-gem 'aws-sdk-s3', require: false
+gem 'aws-sdk-s3', '~> 1.180'
 gem 'dotenv-rails'
 
 group :development, :test do
