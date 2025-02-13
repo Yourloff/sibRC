@@ -6,6 +6,14 @@
     <%= f.collection_select :template_id, @templates, :id, :title, prompt: "Выберите шаблон" %>
   </div>
 
+  <ul id="acceptance-files-list">
+    <% @acceptance_files.each do |file| %>
+      <%= render partial: "clients/acceptance_file", locals: { acceptance_file: file } %>
+    <% end %>
+  </ul>
+
+  </br>
+
   <%= f.submit "Создать акт" %>
 <% end %>
 

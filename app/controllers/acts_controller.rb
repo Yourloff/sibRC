@@ -1,10 +1,11 @@
 class ActsController < ApplicationController
   before_action :authenticate_worker!
   before_action :set_client
-  before_action :set_templates, only: [:new]
+  before_action :set_templates, only: %i[new]
 
   def new
     @act = @client.acts.build
+    @acceptance_files = @client.acceptance_files
   end
 
   def index
