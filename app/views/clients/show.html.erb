@@ -2,14 +2,14 @@
 
 <p><%= @client.fio %></p>
 
-<h2>Загрузить файлы</h2>
+<h2>Загрузить файлы для обработки</h2>
 
 <%= form_with(model: @client, url: upload_acceptance_files_client_path(@client), method: :post, local: false, html: { multipart: true }) do |form| %>
   <%= form.file_field :acceptance_files, multiple: true %>
   <%= form.submit "Загрузить файлы" %>
 <% end %>
 
-<h2>Загруженные файлы</h2>
+<h2>Загруженные файлы обработки</h2>
 
 <ul id="acceptance-files-list">
   <% @client.acceptance_files.each do |file| %>
@@ -18,3 +18,14 @@
 </ul>
 
 <%= link_to 'Формирование актов', new_client_act_path(@client) %>
+
+<h2>Сформированные акты</h2>
+
+<% if @acts.presence %>
+  <% @acts.each do |act| %>
+    <p><%= act %></p>
+  <% end %>
+<% else %>
+  <p>Пока ничего не сформировано.</p>
+<% end %>
+

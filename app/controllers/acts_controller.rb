@@ -1,10 +1,14 @@
 class ActsController < ApplicationController
   before_action :authenticate_worker!
   before_action :set_client
+  before_action :set_templates, only: [:new]
 
   def new
     @act = @client.acts.build
-    @templates = Template.all
+  end
+
+  def index
+    @acts = @client.acts.all
   end
 
   def create
@@ -23,6 +27,10 @@ class ActsController < ApplicationController
 
   def set_client
     @client = Client.find(params[:client_id])
+  end
+
+  def set_templates
+    @templates = Template.all
   end
 
   def act_params
