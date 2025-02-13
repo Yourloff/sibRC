@@ -1,6 +1,6 @@
 class ClientsController < ApplicationController
   before_action :authenticate_worker!
-  before_action :set_client
+  before_action :set_client, except: %i[new create]
 
   def index
     @clients = Client.all
@@ -20,6 +20,7 @@ class ClientsController < ApplicationController
   end
 
   def show
+    @acts = @client.acts
   end
 
   def edit
