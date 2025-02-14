@@ -1,5 +1,7 @@
 <h1>Сибирский утилизационный центр</h1>
 
+<%= link_to 'Настройки', settings_path %>
+
 <h2>Список клиентов</h2>
 <% @clients.each do |client| %>
   <p><%= link_to client.fio, client %></p>
