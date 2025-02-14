@@ -13,15 +13,7 @@ class ActsController < ApplicationController
   end
 
   def create
-    @act = @client.acts.build(act_params)
-    if @act.save
-      uploaded_file = params[:act][:file]
-      @act.file.attach(uploaded_file)
 
-      redirect_to client_path(@client), notice: "Акт успешно добавлен"
-    else
-      render :new, status: :unprocessable_entity
-    end
   end
 
   private
@@ -35,6 +27,6 @@ class ActsController < ApplicationController
   end
 
   def act_params
-    params.require(:act).permit(:template_id, :file)
+    params.require(:act).permit(:template_id, :acceptance_file_id).merge(client_id: params[:client_id])
   end
 end
