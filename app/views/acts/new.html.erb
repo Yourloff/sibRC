@@ -9,6 +9,13 @@
   <div>
     <%= f.label :acceptance_file_id, "Выберите файл" %>
     <%= f.collection_select :acceptance_file_id, @acceptance_files, :signed_id, :filename, prompt: "Выберите файл" %>
+    <button type="button" id="open-excel">Открыть</button>
+  </div>
+
+  <br/>
+
+  <div id="excel-container">
+    <table id="excel-table" border="1"></table>
   </div>
 
   <br/>
@@ -17,3 +24,31 @@
 <% end %>
 
 <%= link_to 'Назад', client_path(@client) %>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+<script>
+    document.getElementById("open-excel").addEventListener("click", function() {
+        let fileId = document.querySelector("select[name='act[acceptance_file_id]']").value;
+        if (!fileId) {
+            alert("Выберите файл!");
+            return;
+        }
+
+        // Передаем clientId из ERB в JS
+        let clientId = "<%= @client.id %>";
+
+        fetch(`/clients/${clientId}/download/${fileId}`)
+            .then(response => response.blob())
+            .then(blob => {
+                let reader = new FileReader();
+                reader.onload = function(e) {
+                    let data = new Uint8Array(e.target.result);
+                    let workbook = XLSX.read(data, { type: "array" });
+                    let sheet = workbook.Sheets[workbook.SheetNames[0]];
+                    let html = XLSX.utils.sheet_to_html(sheet);
+                    document.getElementById("excel-table").innerHTML = html;
+                };
+                reader.readAsArrayBuffer(blob);
+            });
+    });
+</script>

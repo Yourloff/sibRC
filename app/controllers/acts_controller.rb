@@ -16,6 +16,20 @@ class ActsController < ApplicationController
 
   end
 
+  def download
+    file = ActiveStorage::Blob.find_signed params[:signed_id]
+
+    if file
+      attach = @client.acceptance_files.find_by(blob_id: file.id)
+
+      attach.download do |data|
+        send_data data, filename: attach.filename.to_s, type: attach.content_type
+      end
+    else
+      redirect_to client_path(@client), alert: 'Файл не найден'
+    end
+  end
+
   private
 
   def set_client
