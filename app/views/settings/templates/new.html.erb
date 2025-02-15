@@ -1,19 +1,7 @@
 <h1>Загрузить новый шаблон</h1>
 
 <div class="form-container">
-  <%= form_with(model: @template, url: settings_templates_path, local: true) do |form| %>
-    <div>
-      <%= form.label :file, "Выберите файл" %>
-      <%= form.file_field :file %>
-    </div>
-
-    <div>
-      <%= form.label :title, "Название шаблона" %>
-      <%= form.text_field :title %>
-    </div>
-
-    <div>
-      <%= form.submit "Загрузить" %>
-    </div>
-  <% end %>
+  <div class="form-container">
+    <%= render 'form', form_url: settings_templates_path, form_method: :post, submit_text: "Загрузить" %>
+  </div>
 </div>
