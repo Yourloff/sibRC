@@ -13,6 +13,7 @@ gem 'docx', '~> 0.8.0'
 gem 'devise'
 gem 'aws-sdk-s3', '~> 1.180'
 gem 'dotenv-rails'
+gem 'roo'
 
 group :development, :test do
   gem 'debug', platforms: %i[ mri windows ], require: 'debug/prelude'
