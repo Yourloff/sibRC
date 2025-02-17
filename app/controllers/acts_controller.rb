@@ -13,7 +13,11 @@ class ActsController < ApplicationController
   end
 
   def create
-
+    doc_yml = Template.find(act_params[:template_id])
+    excel_file = @client.acceptance_files.find_by(
+      blob_id: ActiveStorage::Blob.find_signed(
+        act_params[:acceptance_file_id]).id)
+    DocumentGenerator.new(doc_yml, excel_file).generate
   end
 
   def download

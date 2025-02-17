@@ -41,7 +41,6 @@ class ClientsController < ApplicationController
     redirect_to clients_path, notice: "Клиент удален"
   end
 
-  # Загрузка файлов
   def upload_acceptance_files
     files = params[:client][:acceptance_files]
 
