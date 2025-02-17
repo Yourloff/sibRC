@@ -3,10 +3,11 @@ Rails.application.routes.draw do
 
   authenticate :user, ->(u) { u.is_a?(Worker) } do
     resources :workers, only: %i[show edit update]
+
     resources :settings, only: %i[index]
 
     namespace :settings do
-      resources :templates
+      resources :templates, except: %i[show]
     end
 
     resources :clients, only: %i[index new create show edit update destroy] do
