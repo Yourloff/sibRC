@@ -3,12 +3,12 @@
 <%= form_with model: @act, url: client_acts_path(@client) do |f| %>
   <div>
     <%= f.label :template_id, "Выберите шаблон" %>
-    <%= f.collection_select :template_id, @templates, :id, :title, { prompt: "Выберите шаблон", disabled: [""] }, { required: true } %>
+    <%= f.collection_select :template_id, @templates, :id, :title, { prompt: "Выберите шаблон" }, { required: true } %>
   </div>
 
   <div>
     <%= f.label :acceptance_file_id, "Выберите файл" %>
-    <%= f.collection_select :acceptance_file_id, @acceptance_files, :signed_id, :filename, { prompt: "Выберите файл", disabled: [""] }, { required: true } %>
+    <%= f.collection_select :acceptance_file_id, @acceptance_files, :signed_id, :filename, { prompt: "Выберите файл" }, { required: true } %>
     <button type="button" id="open-excel" disabled data-client-id="<%= @client.id %>">Открыть</button>
   </div>
 
@@ -27,6 +27,40 @@
 </div>
 
 <%= link_to 'Назад', client_path(@client) %>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const templateSelect = document.querySelector('select[name="act[template_id]"]');
+        const fileSelect = document.querySelector('select[name="act[acceptance_file_id]"]');
+
+        // Отключаем возможность выбора placeholder для template_id
+        if (templateSelect) {
+            const placeholderOption = templateSelect.querySelector('option[value=""]');
+            if (placeholderOption) {
+                placeholderOption.disabled = true;
+            }
+        }
+
+        // Отключаем возможность выбора placeholder для acceptance_file_id
+        if (fileSelect) {
+            const placeholderOption = fileSelect.querySelector('option[value=""]');
+            if (placeholderOption) {
+                placeholderOption.disabled = true;
+            }
+        }
+
+        // Добавляем проверку при отправке формы
+        const form = document.querySelector('form');
+        if (form) {
+            form.addEventListener('submit', function(event) {
+                if (!templateSelect.value || !fileSelect.value) {
+                    event.preventDefault();
+                    alert("Пожалуйста, выберите шаблон и файл перед созданием акта.");
+                }
+            });
+        }
+    });
+</script>
 
 <style>
     #excel-modal {
