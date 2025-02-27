@@ -71,20 +71,117 @@ function initializeExcelEditor() {
     function renderTable(data) {
         excelTable.innerHTML = "";
         const table = document.createElement("table");
-        data.forEach((row, rowIndex) => {
-            if (!row) return;
+        let lastLeftCell;
+        let lastRightCell;
+        let columnCount = 0;
+
+        console.log("Data passed to renderTable:", JSON.stringify(data));
+
+        // Определяем количество столбцов из первого непустого ряда
+        if (data && data.length > 0) {
+            const firstValidRow = data.find(row => row && Array.isArray(row));
+            columnCount = firstValidRow ? firstValidRow.length : 0;
+        }
+
+        if (!data || data.length === 0 || columnCount === 0) {
+            console.log("No valid data, creating default row");
             const tr = document.createElement("tr");
-            row.forEach((cell, colIndex) => {
-                const td = document.createElement("td");
-                td.contentEditable = true;
-                td.textContent = cell || "";
-                td.addEventListener("input", () => {
-                    editedData[rowIndex][colIndex] = td.textContent;
-                });
-                tr.appendChild(td);
+            const td = document.createElement("td");
+            td.contentEditable = true;
+            td.textContent = "";
+            td.addEventListener("input", () => {
+                if (!editedData[0]) editedData[0] = [];
+                editedData[0][0] = td.textContent;
             });
+            lastLeftCell = td;
+            lastRightCell = td;
+            tr.appendChild(td);
             table.appendChild(tr);
-        });
+        } else {
+            data.forEach((row, rowIndex) => {
+                if (!row || !Array.isArray(row) || row.length === 0) {
+                    console.warn(`Row ${rowIndex} is invalid:`, row);
+                    return;
+                }
+                console.log(`Processing row ${rowIndex}:`, row);
+                const tr = document.createElement("tr");
+                row.forEach((cell, colIndex) => {
+                    const td = document.createElement("td");
+                    td.contentEditable = true;
+                    td.textContent = cell || "";
+                    td.addEventListener("input", () => {
+                        editedData[rowIndex][colIndex] = td.textContent;
+                    });
+
+                    if (rowIndex === data.length - 1) {
+                        if (colIndex === 0) {
+                            lastLeftCell = td;
+                            console.log("Set lastLeftCell:", td);
+                        }
+                        if (colIndex === row.length - 1) {
+                            lastRightCell = td;
+                            console.log("Set lastRightCell:", td);
+                        }
+                    }
+                    tr.appendChild(td);
+                });
+                table.appendChild(tr);
+            });
+
+            // Если lastLeftCell не установлен, но строка существует
+            if (!lastLeftCell && data.length > 0 && table.lastChild) {
+                lastLeftCell = table.lastChild.firstChild;
+                console.log("Forced lastLeftCell from last row:", lastLeftCell);
+            }
+        }
+
+        // Функция для добавления индикатора "+"
+        const addIndicator = (cell, position) => {
+            if (!cell) {
+                console.error(`Cell for ${position} is undefined`);
+                return;
+            }
+
+            const addRowIndicator = document.createElement("span");
+            addRowIndicator.textContent = "+";
+            addRowIndicator.className = `add-row-indicator ${position}`;
+            addRowIndicator.style.display = "none";
+            cell.style.position = "relative";
+            cell.appendChild(addRowIndicator);
+
+            console.log(`Indicator added to ${position} cell`, cell);
+
+            cell.addEventListener("mouseenter", () => {
+                console.log(`Mouse enter on ${position} cell`);
+                addRowIndicator.style.display = "block";
+            });
+            cell.addEventListener("mouseleave", () => {
+                console.log(`Mouse leave on ${position} cell`);
+                addRowIndicator.style.display = "none";
+            });
+
+            addRowIndicator.addEventListener("click", (e) => {
+                e.stopPropagation();
+                console.log(`Clicked + on ${position} cell`);
+                const newRow = Array(columnCount || 1).fill("");
+                editedData.push(newRow);
+                renderTable(editedData);
+            });
+        };
+
+        console.log("Final lastLeftCell:", lastLeftCell);
+        console.log("Final lastRightCell:", lastRightCell);
+        if (lastLeftCell) {
+            addIndicator(lastLeftCell, "left");
+        } else {
+            console.error("No last left cell found");
+        }
+        if (lastRightCell && lastRightCell !== lastLeftCell) {
+            addIndicator(lastRightCell, "right");
+        } else if (!lastRightCell) {
+            console.error("No last right cell found");
+        }
+
         excelTable.appendChild(table);
     }
 

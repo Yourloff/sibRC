@@ -88,5 +88,35 @@
     #excel-table td {
         border: 1px solid #ddd;
         padding: 5px;
+        min-width: 100px;
+    }
+
+    .add-row-indicator {
+        display: none;
+        position: absolute;
+        width: 16px;
+        height: 16px;
+        background: #4CAF50;
+        color: white;
+        text-align: center;
+        line-height: 16px;
+        border-radius: 50%;
+        cursor: pointer;
+        font-weight: bold;
+        z-index: 10;
+    }
+
+    .add-row-indicator.left {
+        left: -8px;
+        bottom: -8px;
+    }
+
+    .add-row-indicator.right {
+        right: -8px;
+        bottom: -8px;
+    }
+
+    #excel-table td:hover .add-row-indicator {
+        display: block;
     }
 </style>
