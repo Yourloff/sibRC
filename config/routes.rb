@@ -11,10 +11,11 @@ Rails.application.routes.draw do
     end
 
     resources :clients, only: %i[index new create show edit update destroy] do
-      resources :acts, only: %i[new create]
-
-      collection do
-        get 'download/:signed_id', to: 'acts#download'
+      resources :acts, only: %i[new create] do
+        collection do
+          get 'download/:signed_id', to: 'acts#download', as: :download
+          post 'upload_edited', to: 'acts#upload_edited', as: :upload_edited
+        end
       end
 
       post 'upload_acceptance_files', on: :member
