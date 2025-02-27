@@ -6,6 +6,7 @@ class ActsController < ApplicationController
   def new
     @act = @client.acts.build
     @acceptance_files = @client.acceptance_files
+    @templates = Template.all
   end
 
   def index
@@ -13,11 +14,24 @@ class ActsController < ApplicationController
   end
 
   def create
-    doc_yml = Template.find(act_params[:template_id])
+    template = Template.find(act_params[:template_id])
     excel_file = @client.acceptance_files.find_by(
       blob_id: ActiveStorage::Blob.find_signed(
-        act_params[:acceptance_file_id]).id)
-    DocumentGenerator.new(doc_yml, excel_file).generate
+        act_params[:acceptance_file_id]
+      ).id
+    )
+
+    if template.file.attached? && excel_file.present?
+      DocumentGenerator.new(template, excel_file).generate
+      redirect_to client_acts_path(@client), notice: "Акт успешно создан"
+    else
+      redirect_to new_client_act_path(@client),
+                  alert: "Ошибка: отсутствует файл шаблона или Excel файл"
+    end
+  rescue => e
+    Rails.logger.error "Ошибка при создании акта: #{e.message}"
+    redirect_to new_client_act_path(@client),
+                alert: "Произошла ошибка при создании акта"
   end
 
   def download

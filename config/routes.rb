@@ -12,11 +12,14 @@ Rails.application.routes.draw do
 
     resources :clients, only: %i[index new create show edit update destroy] do
       resources :acts, only: %i[new create]
-      get 'download/:signed_id', to: 'acts#download', as: :download
+
+      collection do
+        get 'download/:signed_id', to: 'acts#download'
+      end
+
       post 'upload_acceptance_files', on: :member
       delete 'delete_acceptance_file/:file_id', to: 'clients#delete_acceptance_file', as: :delete_acceptance_file
     end
-
 
     root "home#index"
   end

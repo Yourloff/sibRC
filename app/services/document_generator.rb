@@ -1,17 +1,21 @@
 class DocumentGenerator
-  attr_reader :template, :placeholders, :replacements
+  attr_reader :template, :mapping, :xlsx
 
-  def initialize(document_name, replacements)
-    @template = Template.find_by(title: document_name)
+  def initialize(docs, excel_file)
+    @template = docs.file
+    @mapping = docs.metadata
+    @excel_file = excel_file
 
-    raise "Шаблон с названием #{document_name} не найден" unless @template
-    template_config = load_template_config(@template)
-
-    @placeholders = template_config[:placeholders]
-    @replacements = replacements
+    #template_config = load_template_config(@template)
   end
 
   def generate
+    xlsx = Roo::Excelx.new(StringIO.new(@excel_file.blob.download))
+
+    xlsx.each_row_streaming(offset: 1) do |row|
+      row.map(&:value)
+    end
+
     raise "Шаблон не найден" unless @template.file.attached?
 
     @replacements.count.times do |i|
